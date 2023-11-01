@@ -1,9 +1,10 @@
-import os
 import time
 import psutil
 
 
-def monitor_network_connections(interval=5, log_file="./logs/network_connections_log.txt"):
+def monitor_network_connections(
+    interval=5, log_file="./logs/network_connections_log.txt"
+):
     previous_connections = set()
 
     while True:
@@ -26,10 +27,13 @@ def monitor_network_connections(interval=5, log_file="./logs/network_connections
         time.sleep(interval)
 
 
-
-def monitor_system_processes(interval=60, cpu_threshold=80, mem_threshold=80, log_file="./logs/processes_log.txt"):
+def monitor_system_processes(
+    interval=60, cpu_threshold=80, mem_threshold=80, log_file="./logs/processes_log.txt"
+):
     while True:
-        for process in psutil.process_iter(["pid", "name", "cpu_percent", "memory_percent"]):
+        for process in psutil.process_iter(
+            ["pid", "name", "cpu_percent", "memory_percent"]
+        ):
             pid = process.info["pid"]
             name = process.info["name"]
             cpu_percent = process.info["cpu_percent"]
@@ -38,6 +42,8 @@ def monitor_system_processes(interval=60, cpu_threshold=80, mem_threshold=80, lo
             if cpu_percent > cpu_threshold or mem_percent > mem_threshold:
                 with open(log_file, "a") as f:
                     timestamp = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
-                    f.write(f"{timestamp} - {name} (PID: {pid}) - CPU: {cpu_percent}%, MEM: {mem_percent}%\n")
+                    f.write(
+                        f"{timestamp} - {name} (PID: {pid}) - CPU: {cpu_percent}%, MEM: {mem_percent}%\n"
+                    )
 
         time.sleep(interval)
